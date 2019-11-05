@@ -5,6 +5,7 @@ matrix:
       env: DESCR=windows-visualstudio
       language: shell
       script:
+        - wget https://aka.ms/wsl-ubuntu-1804
         - wsl ls -la
 #        - ./win/win32/vs2017/travisci.sh
 exclude:
