@@ -5,7 +5,9 @@ matrix:
       env: DESCR=windows-visualstudio
       language: shell
       script:
-        - wget https://aka.ms/wsl-ubuntu-1804
+        - powershell Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing -ErrorAction SilentlyContinue
+        - powershell Add-AppxPackage .\Ubuntu.appx
+#        - wget https://aka.ms/wsl-ubuntu-1804
         - wsl ls -la
 #        - ./win/win32/vs2017/travisci.sh
 exclude:
