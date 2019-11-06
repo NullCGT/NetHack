@@ -5,11 +5,12 @@ matrix:
       env: DESCR=windows-visualstudio
       language: shell
       script:
-        - wsl -l -v
-        - powershell Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1604 -OutFile Ubuntu-1604.appx -UseBasicParsing -ErrorAction SilentlyContinue
-        - powershell Add-AppxPackage Ubuntu-1604.appx
+        - powershell systeminfo | Select-String "^OS Name","^OS Version"
+#        - wsl -l -v
+#        - powershell Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1604 -OutFile Ubuntu-1604.appx -UseBasicParsing -ErrorAction SilentlyContinue
+#        - powershell Add-AppxPackage Ubuntu-1604.appx
 #        - wget https://aka.ms/wsl-ubuntu-1604
-        - wsl ls -la
+#        - wsl ls -la
 #        - ./win/win32/vs2017/travisci.sh
 exclude:
     - os: windows
