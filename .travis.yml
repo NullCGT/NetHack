@@ -6,23 +6,22 @@ matrix:
       compiler: gcc
       script:
         - export
-#        - git clone --depth 1 https://github.com/wmcbrine/PDCurses.git ../pdcurses
-#        - cd /home/travis/build/NetHack/NetHack/util
-#        - wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.9/djgpp-linux64-gcc550.tar.bz2
-#        - cd /home/travis/build/NetHack/NetHack/
-#        - tar xjf util/djgpp-linux64-gcc550.tar.bz2
-#        - cd djgpp
-#        - chmod +x setenv
-#        - ./setenv
-#        - cd ../src
-#        - mkdir ../binary
-#        - cp ../dat/license ../binary
-#        - cp ../dat/data.base ../dat/data.bas
-#        - cp ../include/patchevel.h ../include/patchlev.h
-#        - cp ../doc/Guidebook.txt ../doc/guidebk.txt
-#        - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
-#        - cp ../sys/msdos/Makefile.GCC ../src/Makefile
-#        - 
+        - git clone --depth 1 https://github.com/wmcbrine/PDCurses.git ../pdcurses
+        - cd util
+        - wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.9/djgpp-linux64-gcc550.tar.bz2
+        - cd ../
+        - tar xjf util/djgpp-linux64-gcc550.tar.bz2
+        - export djgpptop=$TRAVIS_BUILD_DIR/djgpp
+        - export PATH=$djgpptop/i586-pc-msdosdjgpp/bin/:$PATH
+        - cd src
+        - mkdir ../binary
+        - cp ../dat/license ../binary
+        - cp ../dat/data.base ../dat/data.bas
+        - cp ../include/patchevel.h ../include/patchlev.h
+        - cp ../doc/Guidebook.txt ../doc/guidebk.txt
+        - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
+        - cp ../sys/msdos/Makefile.GCC ../src/Makefile
+        - make all
   exclude:
     - os: linux
       env: DESCR=linux-xenial-gcc HINTS=linux
