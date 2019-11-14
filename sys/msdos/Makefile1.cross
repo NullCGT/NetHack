@@ -284,7 +284,7 @@ all :   prereq
 prereq: $(HOST_O)prereq.tag
 	@echo Done.
 
-default: $(prereq)
+default: prereq
 
 util: $(HOST_O)utility.tag
 
@@ -295,8 +295,12 @@ $(HOST_O)utility.tag: $(INCL)/date.h $(INCL)/trap.h $(INCL)/onames.h \
 tileutil: $(U)gif2txt $(U)txt2ppm
 	@echo Optional tile development utilities are up to date.
 
+$(HOST_O)prereq.tag: hobj.tag $(U)makedefs $(HOST_O)utility.tag  \
+		$(HOST_O)thintile.tag $(DAT)/nhdat
+	echo prereq done >$@
+
 #==========================================
-#  The main host targets.
+#  Other host targets.
 #==========================================
 
 #note that dir below assumes bin/dir from djgpp distribution
@@ -361,6 +365,14 @@ $(DAT)/engrave:	     $(HOST_O)utility.tag    $(DAT)/engrave.txt
 
 $(DAT)/epitaph:	     $(HOST_O)utility.tag    $(DAT)/epitaph.txt
 	$(U)makedefs -s
+
+#===============================================
+# Create directory for holding host object files
+#===============================================
+
+hobj.tag:
+	mkdir -p ./$(HOBJ)
+	echo directory ready ./$(HOBJ)
 
 #==========================================
 #  Makedefs Stuff
@@ -575,10 +587,6 @@ $(HOST_O)objects.o: $(CONFIG_H)	      $(INCL)/obj.h	 $(INCL)/objclass.h \
 $(HOST_O)panic.o: $(CONFIG_H) $(U)panic.c
 	$(HOST_CC) $(cflags) -o$@ $(U)panic.c
 
-$(HOST_O)prereq.tag: hobj.tag $(U)makedefs $(HOST_O)utility.tag  \
-		$(HOST_O)thintile.tag
-	echo dat done >$@
-
 #$(HOST_O)sp_lev.tag: $(HOST_O)utility.tag \
 #	$(DAT)/bigroom.des  $(DAT)/castle.des \
 #	$(DAT)/endgame.des $(DAT)/gehennom.des $(DAT)/knox.des \
@@ -672,14 +680,6 @@ spotless: clean
 #	if [ -f $(WSHR)/monthin.txt ]; then rm $(WSHR)/monthin.txt; fi;
 #	if [ -f $(WSHR)/objthin.txt ]; then rm $(WSHR)/objthin.txt; fi;
 #	if [ -f $(WSHR)/oththin.txt ]; then rm $(WSHR)/oththin.txt; fi;
-
-#===============================================
-# Create directory for holding host object files
-#===============================================
-
-hobj.tag:
-	mkdir -p ./$(HOBJ)
-	echo directory ready ./$(HOBJ)
 
 #==========================================
 # Game Dependencies
