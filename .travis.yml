@@ -5,15 +5,12 @@ matrix:
       env: DESCR=msdos-cross-on-linux
       compiler: gcc
       script:
-        - export
+#        - export
         - git clone --depth 1 https://github.com/wmcbrine/PDCurses.git ../pdcurses
         - cd util
         - wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.9/djgpp-linux64-gcc550.tar.bz2
         - cd ../
         - tar xjf util/djgpp-linux64-gcc550.tar.bz2
-        - export djgpptop=$TRAVIS_BUILD_DIR/djgpp
-        - export PATH=$djgpptop/i586-pc-msdosdjgpp/bin/:$PATH
-        - export GCC_EXEC_PREFIX=$djgpptop/lib/gcc/
         - cd src
         - mkdir ../binary
         - cp ../dat/license ../binary
@@ -21,8 +18,15 @@ matrix:
         - cp ../include/patchlevel.h ../include/patchlev.h
         - cp ../doc/Guidebook.txt ../doc/guidebk.txt
         - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
-        - cp ../sys/msdos/Makefile.cross ../src/Makefile
-        - make all
+        - cp ../sys/msdos/Makefile1.cross ../src/Makefile1
+        - cp ../sys/msdos/Makefile2.cross ../src/Makefile2
+        - export djgpptop=$TRAVIS_BUILD_DIR/djgpp
+        - make -f Makefile1
+#        - export PATH=$djgpptop/i586-pc-msdosdjgpp/bin/:$PATH
+#        - export GCC_EXEC_PREFIX=$djgpptop/lib/gcc/
+#        - export TARGET_CC=$(djgpptop)/i586-pc-msdosdjgpp/bin/gcc
+#        - export TARGET_LINK=$(djgpptop)/i586-pc-msdosdjgpp/bin/gcc
+#        - make -f Makefile2
   exclude:
     - os: linux
       env: DESCR=linux-xenial-gcc HINTS=linux
