@@ -2,11 +2,14 @@
 #       Cross-compile msdos version of NetHack using a 
 #       linux-hosted djgpp cross compiler.
 #
-#       Makefile1.cross is for the host-side obj files and utilities that
-#       will run on the host platform only.
+#       Makefile1.cross (this file) is for the host-side obj files and 
+#       utilities that will run on the host platform only.
 #
-#       Makefile2.cross is the the target platform obj files and utilities.
+#       Makefile2.cross is the the target platform obj files
+#       and utilities.
 #
+#   Makefile2 utilizes the djgpp cross compiler from Andrew Wu:
+#       https://github.com/andrewwutw/build-djgpp
 #
 # The GNU Make has a problem if you include a drive spec below.
 GAMEDIR =../binary
@@ -103,7 +106,7 @@ W_GAMEDIR =$(subst /,\, $(GAMEDIR))
 #
 
 O  = $(OBJ)/
-HO = $(HOBJ)/
+HOST_O = $(HOBJ)/
 U  = $(UTIL)/
 
 #==========================================
@@ -296,6 +299,27 @@ tileutil: $(U)gif2txt $(U)txt2ppm
 #  The main host targets.
 #==========================================
 
+#note that dir below assumes bin/dir from djgpp distribution
+#
+$(DAT)/nhdat:	$(U)dlb_main $(DAT)/data $(DAT)/rumors \
+	    $(DAT)/oracles $(DAT)/quest.dat \
+	    $(DAT)/bogusmon $(DAT)/engrave $(DAT)/epitaph $(DAT)/tribute
+	cd $(DAT); \
+	pwd; \
+	cp $(MSYS)/msdoshlp.txt .; \
+	ls -1 data oracles options quest.dat rumors help hh  >dlb.lst; \
+	ls -1 cmdhelp history opthelp wizhelp license       >>dlb.lst; \
+	ls -1 bogusmon engrave epitaph tribute msdoshlp.txt >>dlb.lst; \
+	$(U)dlb_main cvIf dlb.lst nhdat
+	cd $(SRC)
+
+$(U)dlb_main: $(DLBOBJS)
+	$(HOST_LINK) $(LFLAGS) -o$@ $(DLBOBJS)
+
+$(HOST_O)dlb_main.o: $(U)dlb_main.c $(INCL)/config.h $(DLB_H)
+	$(HOST_CC) $(cflags) -o$@ $(U)dlb_main.c
+
+
 $(INCL)/date.h : $(U)makedefs
 	-$(U)makedefs -v
 
@@ -316,10 +340,6 @@ vis_tab.c: $(U)makedefs
 
 # make data.base an 8.3 filename to prevent an make warning
 DATABASE = $(DAT)/data.bas
-
-$(HOST_O)dat.tag: $(DAT)/data $(DAT/rumors $(DAT)/quest.dat $(DAT)oracles \
-	$(DAT)/bogusmon $(DAT)/engrave $(DAT)/epitaph $(DAT)/nhdat
-	@echo dat done >$@
 
 $(DAT)/data: $(HOST_O)utility.tag	$(DATABASE)
 	$(U)makedefs -d
@@ -555,7 +575,7 @@ $(HOST_O)objects.o: $(CONFIG_H)	      $(INCL)/obj.h	 $(INCL)/objclass.h \
 $(HOST_O)panic.o: $(CONFIG_H) $(U)panic.c
 	$(HOST_CC) $(cflags) -o$@ $(U)panic.c
 
-$(HOST_O)prereq.tag: $(HOST_O)hobj.tag $(U)makedefs $(HOST_O)utility.tag $(HOST_O)dat.tag  \
+$(HOST_O)prereq.tag: hobj.tag $(U)makedefs $(HOST_O)utility.tag $(HOST_O)dat.tag  \
 		$(HOST_O)thintile.tag
 	echo dat done >$@
 
@@ -603,44 +623,20 @@ $(HOST_O)prereq.tag: $(HOST_O)hobj.tag $(U)makedefs $(HOST_O)utility.tag $(HOST_
 #	cd $(SRC)
 
 #==========================================
-# DLB stuff
-#==========================================
-
-#note that dir below assumes bin/dir from djgpp distribution
-#
-$(DAT)/nhdat:	$(U)dlb_main $(DAT)/data $(DAT)/rumors \
-	    $(DAT)/oracles $(DAT)/quest.dat \
-	    $(DAT)/bogusmon $(DAT)/engrave $(DAT)/epitaph $(DAT)/tribute
-	echo dat done >$(HOST_O)dat.tag
-	cd $(DAT)
-	cp $(MSYS)/msdoshlp.txt .
-	ls -1 data oracles options quest.dat rumors help hh >dlb.lst
-	ls -1 cmdhelp history opthelp wizhelp license msdoshlp.txt >>dlb.lst
-	ls -1 bogusmon engrave epitaph tribute >>dlb.lst
-#	ls *.lev) >>dlb.lst
-	$(U)dlb_main cvIf dlb.lst nhdat
-	cd $(SRC)
-
-$(U)dlb_main: $(DLBOBJS)
-	$(HOST_LINK) $(LFLAGS) -o$@ $(DLBOBJS)
-
-$(HOST_O)dlb_main.o: $(U)dlb_main.c $(INCL)/config.h $(DLB_H)
-	$(HOST_CC) $(cflags) -o$@ $(U)dlb_main.c
-
-#==========================================
 #  Housekeeping for host side.
 #==========================================
 
 clean:
-	rm ./ho/*.o
+	rm ./host_o/*.o
 	if [ -f $(HOST_O)prereq.tag ];     then rm $(HOST_O)prereq.tag; fi;
 	if [ -f $(HOST_O)dat.tag ];        then rm $(HOST_O)dat.tag; fi;
-	if [ -f $(HOST_O)hobj.tag ];       then rm $(HOST_O)hobj.tag; fi;
+	if [ -f hobj.tag ];                then rm hobj.tag; fi;
 	if [ -f $(HOST_O)utility.tag ];    then rm $(HOST_O)utility.tag; fi;
-	if [ -f temp.a ];              then rm temp.a; fi;
+	if [ -f temp.a ];                  then rm temp.a; fi;
 
 spotless: clean
 
+	if [ -f $(INCL)/pm.h ];        then rm $(INCL)/pm.h; fi;
 #	if [ -f $(U)dgn_flex.c ];      then rm $(U)dgn_flex.c; fi;
 #	if [ -f $(U)dgn_lex.c ];       then rm $(U)dgn_lex.c; fi;
 #	if [ -f $(U)makedefs ];        then rm $(U)makedefs; fi;
@@ -682,8 +678,8 @@ spotless: clean
 # Create directory for holding host object files
 #===============================================
 
-$(HOST_O)hobj.tag:
-	mkdir -p $(HOBJ)
+hobj.tag:
+	mkdir -p ./$(HOBJ)
 	echo directory ready ./$(HOBJ)
 
 #==========================================
