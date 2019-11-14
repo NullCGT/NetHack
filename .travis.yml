@@ -21,7 +21,7 @@ matrix:
         - cp ../include/patchlevel.h ../include/patchlev.h
         - cp ../doc/Guidebook.txt ../doc/guidebk.txt
         - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
-        - cp ../sys/msdos/Makefile.GCC ../src/Makefile
+        - cp ../sys/msdos/Makefile.cross ../src/Makefile
         - make all
   exclude:
     - os: linux
