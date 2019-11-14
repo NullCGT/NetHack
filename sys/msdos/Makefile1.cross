@@ -20,7 +20,7 @@ GAMEDIR =../binary
 #
 
 OBJ  = o
-HOBJ = ho
+HOBJ = host_o
 DAT  = ../dat
 DOC  = ../doc
 INCL = ../include
@@ -112,29 +112,29 @@ U  = $(UTIL)/
 
 MAKESRC	    = makedefs.c
 
-MAKEDEFSOBJS    = $(HO)makedefs.o  $(HO)monst.o	 $(HO)objects.o
+MAKEDEFSOBJS    = $(HOST_O)makedefs.o  $(HOST_O)monst.o	 $(HOST_O)objects.o
 
 #SPLEVSRC    = lev_yacc.c  lev_$(LEX).c	 lev_main.c  panic.c
 #DGNCOMPSRC  = dgn_yacc.c  dgn_$(LEX).c	 dgn_main.c
-#SPLEVOBJS   = $(HO)lev_yacc.o $(HO)lev_$(LEX).o $(HO)lev_main.o $(HO)alloc.o \
-#		$(HO)monst.o $(HO)objects.o $(HO)panic.o                     \
-#		$(HO)drawing.o $(HO)decl.o $(HO)stubvid.o
-#DGNCOMPOBJS = $(HO)dgn_yacc.o  $(HO)dgn_$(LEX).o $(HO)dgn_main.o  $(HO)alloc.o  \
-#		$(HO)panic.o
+#SPLEVOBJS   = $(HOST_O)lev_yacc.o $(HOST_O)lev_$(LEX).o $(HOST_O)lev_main.o $(HOST_O)alloc.o \
+#		$(HOST_O)monst.o $(HOST_O)objects.o $(HOST_O)panic.o                     \
+#		$(HOST_O)drawing.o $(HOST_O)decl.o $(HOST_O)stubvid.o
+#DGNCOMPOBJS = $(HOST_O)dgn_yacc.o  $(HOST_O)dgn_$(LEX).o $(HOST_O)dgn_main.o  $(HOST_O)alloc.o  \
+#		$(HOST_O)panic.o
 
 #==========================================
 #  Tile related object files.
 #==========================================
 
-TILOBJ      = $(HO)tile.o $(VGAOBJ)
+TILOBJ      = $(HOST_O)tile.o $(VGAOBJ)
 
-TILOBJ2     = $(HO)tileset.o $(HO)bmptiles.o $(HO)giftiles.o
+TILOBJ2     = $(HOST_O)tileset.o $(HOST_O)bmptiles.o $(HOST_O)giftiles.o
 
-TEXTIO      = $(HO)tiletext.o $(HO)tiletxt.o $(HO)drawing.o $(HO)decl.o $(HO)monst.o \
-		$(HO)objects.o
+TEXTIO      = $(HOST_O)tiletext.o $(HOST_O)tiletxt.o $(HOST_O)drawing.o $(HOST_O)decl.o $(HOST_O)monst.o \
+		$(HOST_O)objects.o
 
-TEXTIO2     = $(HO)tiletex2.o $(HO)tiletxt2.o $(HO)drawing.o $(HO)decl.o $(HO)monst.o \
-		$(HO)objects.o
+TEXTIO2     = $(HOST_O)tiletex2.o $(HOST_O)tiletxt2.o $(HOST_O)drawing.o $(HOST_O)decl.o $(HOST_O)monst.o \
+		$(HOST_O)objects.o
 
 TILE_BMP    = $(DAT)/nhtiles.bmp
 
@@ -144,19 +144,19 @@ TILEFILES   = $(WSHR)/monsters.txt $(WSHR)/objects.txt $(WSHR)/other.txt
 
 TILEFILES2  = $(WSHR)/monthin.txt $(WSHR)/objthin.txt $(WSHR)/oththin.txt
 
-GIFREADERS  = $(HO)gifread.o $(HO)alloc.o $(HO)panic.o
+GIFREADERS  = $(HOST_O)gifread.o $(HOST_O)alloc.o $(HOST_O)panic.o
 
-GIFREAD2    = $(HO)gifread2.o $(HO)alloc.o $(HO)panic.o
+GIFREAD2    = $(HOST_O)gifread2.o $(HOST_O)alloc.o $(HOST_O)panic.o
 
-PPMWRITERS  = $(HO)ppmwrite.o $(HO)alloc.o $(HO)panic.o
+PPMWRITERS  = $(HOST_O)ppmwrite.o $(HOST_O)alloc.o $(HOST_O)panic.o
 
-PPMWRIT2    = $(HO)ppmwrit2.o $(HO)alloc.o $(HO)panic.o
+PPMWRIT2    = $(HOST_O)ppmwrit2.o $(HOST_O)alloc.o $(HOST_O)panic.o
 
 #==========================================
 #   Object files.
 #==========================================
 
-DLBOBJ = $(HO)dlb.o
+DLBOBJ = $(HOST_O)dlb.o
 
 ALLOBJ = $(MAKEDEFSOBJS) $(TILOBJ) $(TILOBJ2) $(TEXTIO) $(TEXTIO2)
 
@@ -205,7 +205,7 @@ endif
 
 ifeq ($(USE_DLB),Y)
 DLB = dlb
-DLBOBJS = $(HO)dlb_main.o $(HO)dlb.o $(HO)alloc.o $(HO)panic.o
+DLBOBJS = $(HOST_O)dlb_main.o $(HOST_O)dlb.o $(HOST_O)alloc.o $(HOST_O)panic.o
 else
 DLB =
 DLBOBJS =
@@ -243,31 +243,31 @@ LFLAGS =
 # Rules for host files in src
 #==========================================
 
-$(HO)%.o : $(SRC)/%.c
+$(HOST_O)%.o : $(SRC)/%.c
 	$(HOST_CC) $(cflags) -o$@ $<
 
 #==========================================
 # Rules for host files in sys/msdos
 #==========================================
 
-$(HO)%.o : $(MSYS)/%.c
+$(HOST_O)%.o : $(MSYS)/%.c
 	$(HOST_CC) $(cflags) -I../sys/msdos -o$@ $<
 
 #==========================================
 # Rules for host files in util
 #==========================================
 
-$(HO)%.o : $(SRC)/%.c
+$(HOST_O)%.o : $(SRC)/%.c
 	$(HOST_CC) $(cflags) -o$@ $<
 
-$(HO)%.o : %.c
+$(HOST_O)%.o : %.c
 	$(HOST_CC) $(cflags) -o$@ $<
 
 #==========================================
 # Rules for host files in win/share
 #==========================================
 
-$(HO)%.o : $(WSHR)/%.c
+$(HOST_O)%.o : $(WSHR)/%.c
 	$(HOST_CC) $(cflags) -I../win/share -o$@ $<
 
 #==========================================
@@ -278,14 +278,14 @@ $(HO)%.o : $(WSHR)/%.c
 
 all :   prereq
 
-prereq: $(HO)prereq.tag
+prereq: $(HOST_O)prereq.tag
 	@echo Done.
 
 default: $(prereq)
 
-util: $(HO)utility.tag
+util: $(HOST_O)utility.tag
 
-$(HO)utility.tag: $(INCL)/date.h $(INCL)/trap.h $(INCL)/onames.h \
+$(HOST_O)utility.tag: $(INCL)/date.h $(INCL)/trap.h $(INCL)/onames.h \
 	$(INCL)/pm.h vis_tab.c $(TILEUTIL)
 	echo host utilities made > $@
 
@@ -317,29 +317,29 @@ vis_tab.c: $(U)makedefs
 # make data.base an 8.3 filename to prevent an make warning
 DATABASE = $(DAT)/data.bas
 
-$(HO)dat.tag: $(DAT)/data $(DAT/rumors $(DAT)/quest.dat $(DAT)oracles \
+$(HOST_O)dat.tag: $(DAT)/data $(DAT/rumors $(DAT)/quest.dat $(DAT)oracles \
 	$(DAT)/bogusmon $(DAT)/engrave $(DAT)/epitaph $(DAT)/nhdat
 	@echo dat done >$@
 
-$(DAT)/data: $(HO)utility.tag	$(DATABASE)
+$(DAT)/data: $(HOST_O)utility.tag	$(DATABASE)
 	$(U)makedefs -d
 
-$(DAT)/rumors:	     $(HO)utility.tag    $(DAT)/rumors.tru	$(DAT)/rumors.fal
+$(DAT)/rumors:	     $(HOST_O)utility.tag    $(DAT)/rumors.tru	$(DAT)/rumors.fal
 	$(U)makedefs -r
 
-$(DAT)/quest.dat: $(HO)utility.tag  $(DAT)/quest.txt
+$(DAT)/quest.dat: $(HOST_O)utility.tag  $(DAT)/quest.txt
 	$(U)makedefs -q
 
-$(DAT)/oracles:	     $(HO)utility.tag    $(DAT)/oracles.txt
+$(DAT)/oracles:	     $(HOST_O)utility.tag    $(DAT)/oracles.txt
 	$(U)makedefs -h
 
-$(DAT)/bogusmon:     $(HO)utility.tag    $(DAT)/bogusmon.txt
+$(DAT)/bogusmon:     $(HOST_O)utility.tag    $(DAT)/bogusmon.txt
 	$(U)makedefs -s
 
-$(DAT)/engrave:	     $(HO)utility.tag    $(DAT)/engrave.txt
+$(DAT)/engrave:	     $(HOST_O)utility.tag    $(DAT)/engrave.txt
 	$(U)makedefs -s
 
-$(DAT)/epitaph:	     $(HO)utility.tag    $(DAT)/epitaph.txt
+$(DAT)/epitaph:	     $(HOST_O)utility.tag    $(DAT)/epitaph.txt
 	$(U)makedefs -s
 
 #==========================================
@@ -349,7 +349,7 @@ $(DAT)/epitaph:	     $(HO)utility.tag    $(DAT)/epitaph.txt
 $(U)makedefs:  $(MAKEDEFSOBJS)
 	$(HOST_LINK) $(LFLAGS) -o$@ $(MAKEDEFSOBJS)
 
-$(HO)makedefs.o:  $(CONFIG_H)	$(PERMONST_H)	   $(INCL)/objclass.h \
+$(HOST_O)makedefs.o:  $(CONFIG_H)	$(PERMONST_H)	   $(INCL)/objclass.h \
 		$(INCL)/monsym.h   $(INCL)/qtext.h $(U)makedefs.c
 	$(HOST_CC) $(cflags) -o$@ $(U)makedefs.c
 
@@ -362,14 +362,14 @@ $(HO)makedefs.o:  $(CONFIG_H)	$(PERMONST_H)	   $(INCL)/objclass.h \
 #	ar r temp.a $(SPLEVOBJS)
 #	$(HOST_LINK) $(LFLAGS) -o$@ temp.a
 #
-#$(HO)lev_yacc.o:  $(HACK_H)	 $(SP_LEV_H) $(INCL)/lev_comp.h $(U)lev_yacc.c
+#$(HOST_O)lev_yacc.o:  $(HACK_H)	 $(SP_LEV_H) $(INCL)/lev_comp.h $(U)lev_yacc.c
 #	$(HOST_CC) $(cflags) -o$@ $(U)lev_yacc.c
 #
-#$(HO)lev_$(LEX).o:  $(HACK_H)   $(SP_LEV_H)	  $(INCL)/lev_comp.h \
+#$(HOST_O)lev_$(LEX).o:  $(HACK_H)   $(SP_LEV_H)	  $(INCL)/lev_comp.h \
 #	$(U)lev_$(LEX).c
 #	$(HOST_CC) $(cflags) -o$@ $(U)lev_$(LEX).c
 #
-#$(HO)lev_main.o:  $(HACK_H) $(INCL)/sp_lev.h $(INCL)/date.h $(U)lev_main.c
+#$(HOST_O)lev_main.o:  $(HACK_H) $(INCL)/sp_lev.h $(INCL)/date.h $(U)lev_main.c
 #
 #$(U)lev_yacc.c: $(SSHR)/lev_yacc.c
 #	@echo ---
@@ -432,10 +432,10 @@ $(SRC)/tile.c: $(U)tilemap
 	@$(U)tilemap
 	@echo A new $@ has been created
 
-$(U)tilemap: $(HO)tilemap.o
-	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)tilemap.o
+$(U)tilemap: $(HOST_O)tilemap.o
+	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)tilemap.o
 
-$(HO)tilemap.o: $(WSHR)/tilemap.c $(HACK_H) $(TILE_H)
+$(HOST_O)tilemap.o: $(WSHR)/tilemap.c $(HACK_H) $(TILE_H)
 	$(HOST_CC) $(cflags) -I$(WSHR) -I$(MSYS) -o$@ $(WSHR)/tilemap.c
 
 
@@ -450,55 +450,55 @@ $(DAT)/nhtiles.bmp: $(TILEFILES) $(U)tile2bmp
 	@$(U)tile2bmp $@
 	@cd $(SRC)
 
-$(U)tile2bmp: $(HO)tile2bmp.o $(TEXTIO)
+$(U)tile2bmp: $(HOST_O)tile2bmp.o $(TEXTIO)
 	-rm -f temp.a
 	ar r temp.a $(TEXTIO)
-	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)tile2bmp.o temp.a
+	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)tile2bmp.o temp.a
 
-$(U)tile2bin: $(HO)tile2bin.o $(TEXTIO)
+$(U)tile2bin: $(HOST_O)tile2bin.o $(TEXTIO)
 	-rm -f temp.a
 	ar r temp.a $(TEXTIO)
-	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)tile2bin.o temp.a
+	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)tile2bin.o temp.a
 
-$(U)til2bin2: $(HO)til2bin2.o $(TEXTIO2)
+$(U)til2bin2: $(HOST_O)til2bin2.o $(TEXTIO2)
 	-rm -f temp.a
 	ar r temp.a $(TEXTIO2)
-	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)til2bin2.o temp.a
+	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)til2bin2.o temp.a
 
-$(U)thintile: $(HO)thintile.o
-	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)thintile.o
+$(U)thintile: $(HOST_O)thintile.o
+	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)thintile.o
 
-#$(HO)thintile.o:  $(HACK_H) $(WSHR)/tile.h $(WSHR)/thintile.c
+#$(HOST_O)thintile.o:  $(HACK_H) $(WSHR)/tile.h $(WSHR)/thintile.c
 #	-rm -f temp.a
 #	ar r temp.a $(TEXTIO)
-#	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)tile2bmp.o temp.a
+#	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)tile2bmp.o temp.a
 
-$(HO)thintile.o:  $(HACK_H) $(WSHR)/tile.h $(WSHR)/thintile.c
+$(HOST_O)thintile.o:  $(HACK_H) $(WSHR)/tile.h $(WSHR)/thintile.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -DTILE -DOVERVIEW_FILE -o$@ $(WSHR)/thintile.c
 
-$(HO)thintile.tag: $(U)thintile $(TILEFILES)
+$(HOST_O)thintile.tag: $(U)thintile $(TILEFILES)
 	$(U)thintile
 	echo thintiles created >$@
 
-$(HO)tile2bmp.o:  $(HACK_H) $(TILE_H) $(WSHR)/tile2bmp.c
+$(HOST_O)tile2bmp.o:  $(HACK_H) $(TILE_H) $(WSHR)/tile2bmp.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -o$@ $(WSHR)/tile2bmp.c
 
-$(HO)tile2bin.o:  $(HACK_H) $(TILE_H) $(MSYS)/pctiles.h $(MSYS)/pcvideo.h $(MSYS)/tile2bin.c
+$(HOST_O)tile2bin.o:  $(HACK_H) $(TILE_H) $(MSYS)/pctiles.h $(MSYS)/pcvideo.h $(MSYS)/tile2bin.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -o$@ $(MSYS)/tile2bin.c
 
-$(HO)til2bin2.o:  $(HACK_H) $(TILE_H) $(MSYS)/pctiles.h $(MSYS)/pcvideo.h $(MSYS)/tile2bin.c
+$(HOST_O)til2bin2.o:  $(HACK_H) $(TILE_H) $(MSYS)/pctiles.h $(MSYS)/pcvideo.h $(MSYS)/tile2bin.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -DTILE_X=8 -DOVERVIEW_FILE -o$@ $(MSYS)/tile2bin.c
 
-$(HO)tiletext.o:  $(CONFIG_H) $(TILE_H) $(WSHR)/tiletext.c
+$(HOST_O)tiletext.o:  $(CONFIG_H) $(TILE_H) $(WSHR)/tiletext.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -o$@ $(WSHR)/tiletext.c
 
-$(HO)tiletex2.o:  $(CONFIG_H) $(TILE_H) $(WSHR)/tiletext.c
+$(HOST_O)tiletex2.o:  $(CONFIG_H) $(TILE_H) $(WSHR)/tiletext.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -DTILE_X=8 -o$@ $(WSHR)/tiletext.c
 
-$(HO)tiletxt.o: $(CONFIG_H) $(TILE_H) $(WSHR)/tilemap.c
+$(HOST_O)tiletxt.o: $(CONFIG_H) $(TILE_H) $(WSHR)/tilemap.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -DTILETEXT -o$@ $(WSHR)/tilemap.c
   
-$(HO)tiletxt2.o: $(CONFIG_H) $(TILE_H) $(WSHR)/tilemap.c
+$(HOST_O)tiletxt2.o: $(CONFIG_H) $(TILE_H) $(WSHR)/tilemap.c
 	$(HOST_CC) $(cflags) -I$(MSYS) -I$(WSHR) -DTILETEXT -DTILE_X=8 -o$@ $(WSHR)/tilemap.c
 #
 # Optional GIF Utilities (for development)
@@ -516,27 +516,27 @@ $(U)txt2ppm: $(PPMWRITERS) $(TEXTIO)
 $(U)txt2ppm2: $(PPMWRIT2) $(TEXTIO2)
 	$(HOST_LINK) $(LFLAGS) -o$@ $(PPMWRIT2) $(TEXTIO2)
 
-$(HO)gifread.o: $(CONFIG_H) $(WSHR)/tile.h $(WSHR)/gifread.c
+$(HOST_O)gifread.o: $(CONFIG_H) $(WSHR)/tile.h $(WSHR)/gifread.c
 
-$(HO)gifread2.o: $(CONFIG_H) $(WSHR)/tile.h $(WSHR)/gifread.c
+$(HOST_O)gifread2.o: $(CONFIG_H) $(WSHR)/tile.h $(WSHR)/gifread.c
 	$(HOST_CC) $(cflags) -DTILE_X=8 -o$@ $(WSHR)/gifread.c
 
 ppmwrite.c: $(WSHR)/ppmwrite.c
 	cp $(WSHR)/ppmwrite.c .
 
-$(HO)ppmwrite.o: $(CONFIG_H)	$(WSHR)/tile.h
+$(HOST_O)ppmwrite.o: $(CONFIG_H)	$(WSHR)/tile.h
 
-$(HO)ppmwrit2.o:  $(CONFIG_H) $(WSHR)/tile.h ppmwrite.c
+$(HOST_O)ppmwrit2.o:  $(CONFIG_H) $(WSHR)/tile.h ppmwrite.c
 	$(HOST_CC) $(cflags) -DTILE_X=8 -o$@ ppmwrite.c
 
 #
 #  Optional tile viewer (development sources only)
 #
 
-$(U)viewtib: $(HO)viewtib.o
-	$(HOST_LINK) $(LFLAGS) -o$@ $(HO)viewtib.o $(LIBRARIES)
+$(U)viewtib: $(HOST_O)viewtib.o
+	$(HOST_LINK) $(LFLAGS) -o$@ $(HOST_O)viewtib.o $(LIBRARIES)
 
-$(HO)viewtib.o: $(MSYS)/viewtib.c
+$(HOST_O)viewtib.o: $(MSYS)/viewtib.c
 
 endif
 
@@ -544,22 +544,22 @@ endif
 #  Other host Util Dependencies.
 #==========================================
 
-$(HO)monst.o: $(CONFIG_H) $(PERMONST_H) $(INCL)/monsym.h   \
+$(HOST_O)monst.o: $(CONFIG_H) $(PERMONST_H) $(INCL)/monsym.h   \
 	$(INCL)/color.h	 monst.c
 	$(HOST_CC) $(cflags) -o$@ monst.c
 
-$(HO)objects.o: $(CONFIG_H)	      $(INCL)/obj.h	 $(INCL)/objclass.h \
+$(HOST_O)objects.o: $(CONFIG_H)	      $(INCL)/obj.h	 $(INCL)/objclass.h \
 	$(INCL)/prop.h	    $(INCL)/color.h    objects.c
 	$(HOST_CC) $(cflags) -o$@ objects.c
 
-$(HO)panic.o: $(CONFIG_H) $(U)panic.c
+$(HOST_O)panic.o: $(CONFIG_H) $(U)panic.c
 	$(HOST_CC) $(cflags) -o$@ $(U)panic.c
 
-$(HO)prereq.tag: $(HO)hobj.tag $(U)makedefs $(HO)utility.tag $(HO)dat.tag  \
-		$(HO)thintile.tag
+$(HOST_O)prereq.tag: $(HOST_O)hobj.tag $(U)makedefs $(HOST_O)utility.tag $(HOST_O)dat.tag  \
+		$(HOST_O)thintile.tag
 	echo dat done >$@
 
-#$(HO)sp_lev.tag: $(HO)utility.tag \
+#$(HOST_O)sp_lev.tag: $(HOST_O)utility.tag \
 #	$(DAT)/bigroom.des  $(DAT)/castle.des \
 #	$(DAT)/endgame.des $(DAT)/gehennom.des $(DAT)/knox.des \
 #	$(DAT)/medusa.des  $(DAT)/oracle.des   $(DAT)/tower.des \
@@ -596,7 +596,7 @@ $(HO)prereq.tag: $(HO)hobj.tag $(U)makedefs $(HO)utility.tag $(HO)dat.tag  \
 #	cd $(SRC)
 #	echo sp_levs done > $@
 
-#$(DAT)/dungeon:	  $(HO)utility.tag  $(DAT)/dungeon.def
+#$(DAT)/dungeon:	  $(HOST_O)utility.tag  $(DAT)/dungeon.def
 #	$(U)makedefs -e
 #	cd $(DAT)
 #	$(U)dgn_comp dungeon.pdf
@@ -611,7 +611,7 @@ $(HO)prereq.tag: $(HO)hobj.tag $(U)makedefs $(HO)utility.tag $(HO)dat.tag  \
 $(DAT)/nhdat:	$(U)dlb_main $(DAT)/data $(DAT)/rumors \
 	    $(DAT)/oracles $(DAT)/quest.dat \
 	    $(DAT)/bogusmon $(DAT)/engrave $(DAT)/epitaph $(DAT)/tribute
-	echo dat done >$(HO)dat.tag
+	echo dat done >$(HOST_O)dat.tag
 	cd $(DAT)
 	cp $(MSYS)/msdoshlp.txt .
 	ls -1 data oracles options quest.dat rumors help hh >dlb.lst
@@ -624,7 +624,7 @@ $(DAT)/nhdat:	$(U)dlb_main $(DAT)/data $(DAT)/rumors \
 $(U)dlb_main: $(DLBOBJS)
 	$(HOST_LINK) $(LFLAGS) -o$@ $(DLBOBJS)
 
-$(HO)dlb_main.o: $(U)dlb_main.c $(INCL)/config.h $(DLB_H)
+$(HOST_O)dlb_main.o: $(U)dlb_main.c $(INCL)/config.h $(DLB_H)
 	$(HOST_CC) $(cflags) -o$@ $(U)dlb_main.c
 
 #==========================================
@@ -633,10 +633,10 @@ $(HO)dlb_main.o: $(U)dlb_main.c $(INCL)/config.h $(DLB_H)
 
 clean:
 	rm ./ho/*.o
-	if [ -f $(HO)prereq.tag ];     then rm $(HO)prereq.tag; fi;
-	if [ -f $(HO)dat.tag ];        then rm $(HO)dat.tag; fi;
-	if [ -f $(HO)hobj.tag ];       then rm $(HO)hobj.tag; fi;
-	if [ -f $(HO)utility.tag ];    then rm $(HO)utility.tag; fi;
+	if [ -f $(HOST_O)prereq.tag ];     then rm $(HOST_O)prereq.tag; fi;
+	if [ -f $(HOST_O)dat.tag ];        then rm $(HOST_O)dat.tag; fi;
+	if [ -f $(HOST_O)hobj.tag ];       then rm $(HOST_O)hobj.tag; fi;
+	if [ -f $(HOST_O)utility.tag ];    then rm $(HOST_O)utility.tag; fi;
 	if [ -f temp.a ];              then rm temp.a; fi;
 
 spotless: clean
@@ -682,7 +682,7 @@ spotless: clean
 # Create directory for holding host object files
 #===============================================
 
-$(HO)hobj.tag:
+$(HOST_O)hobj.tag:
 	mkdir -p $(HOBJ)
 	echo directory ready ./$(HOBJ)
 
@@ -692,19 +692,19 @@ $(HO)hobj.tag:
 
 # src dependencies
 
-$(HO)tile.o: tile.c $(HACK_H)
-$(HO)vis_tab.o: vis_tab.c $(CONFIG_H) $(INCL)/vis_tab.h
-$(HO)alloc.o: alloc.c $(CONFIG_H)
-$(HO)dlb.o: dlb.c $(CONFIG_H) $(INCL)/dlb.h
+$(HOST_O)tile.o: tile.c $(HACK_H)
+$(HOST_O)vis_tab.o: vis_tab.c $(CONFIG_H) $(INCL)/vis_tab.h
+$(HOST_O)alloc.o: alloc.c $(CONFIG_H)
+$(HOST_O)dlb.o: dlb.c $(CONFIG_H) $(INCL)/dlb.h
 	$(HOST_CC) $(cflags) -I../sys/msdos -o$@ dlb.c
-$(HO)monst.o: monst.c $(CONFIG_H) $(INCL)/permonst.h $(INCL)/align.h \
+$(HOST_O)monst.o: monst.c $(CONFIG_H) $(INCL)/permonst.h $(INCL)/align.h \
 		$(INCL)/monattk.h $(INCL)/monflag.h $(INCL)/monsym.h \
 		$(INCL)/color.h
-$(HO)objects.o: objects.c $(CONFIG_H) $(INCL)/obj.h $(INCL)/objclass.h \
+$(HOST_O)objects.o: objects.c $(CONFIG_H) $(INCL)/obj.h $(INCL)/objclass.h \
 		$(INCL)/prop.h $(INCL)/skills.h $(INCL)/color.h
-$(HO)tileset.o: $(WSHR)/tileset.c $(HACK_H)
-$(HO)bmptiles.o: $(WSHR)/bmptiles.c $(INCL)/config.h $(INCL)/tileset.h $(INCL)/integer.h
-$(HO)giftiles.o: $(WSHR)/giftiles.c $(INCL)/config.h $(INCL)/tileset.h $(INCL)/integer.h
+$(HOST_O)tileset.o: $(WSHR)/tileset.c $(HACK_H)
+$(HOST_O)bmptiles.o: $(WSHR)/bmptiles.c $(INCL)/config.h $(INCL)/tileset.h $(INCL)/integer.h
+$(HOST_O)giftiles.o: $(WSHR)/giftiles.c $(INCL)/config.h $(INCL)/tileset.h $(INCL)/integer.h
 
 # end of file
 
