@@ -84,7 +84,6 @@ matrix:
         - cd src
         - cp ../sys/winnt/Makefile.gcc ./Makefile
         - mingw32-make install
-        - https://github.com/andrewwutw/build-djgpp/releases/download/v2.9/djgpp-linux64-gcc550.tar.bz2
   exclude:
 #    - os: osx
 #      osx_image: xcode10.3
