@@ -13,6 +13,7 @@ matrix:
         - tar xjf util/djgpp-linux64-gcc550.tar.bz2
         - export djgpptop=$TRAVIS_BUILD_DIR/djgpp
         - export PATH=$djgpptop/i586-pc-msdosdjgpp/bin/:$PATH
+        - export GCC_EXEC_PREFIX=$djgpptop/lib/gcc/
         - cd src
         - mkdir ../binary
         - cp ../dat/license ../binary
