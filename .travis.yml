@@ -32,10 +32,7 @@ matrix:
 #        - export TARGET_LINK=$DJGPP_TOP/i586-pc-msdosdjgpp/bin/gcc
         - export GCC_EXEC_PREFIX=$DJGPP_TOP/lib/gcc/
         - make -f Makefile2
-        - if [ -f $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE]
-        - then
-        -     cp $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE ../binary
-        - fi
+        - if [ -f $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE]; then cp $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE ../binary; fi;
         - ls -l ../binary
   exclude:
     - os: linux

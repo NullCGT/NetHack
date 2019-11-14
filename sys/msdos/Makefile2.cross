@@ -293,7 +293,7 @@ VOBJ07 = $(O)getline.o  $(O)hack.o    $(O)hacklib.o  $(O)invent.o   $(O)lock.o
 VOBJ08 = $(O)mail.o     $(O)main.o    $(O)makemon.o  $(O)mapglyph.o $(O)mcastu.o $(O)mhitm.o
 VOBJ09 = $(O)mhitu.o    $(O)minion.o  $(O)mkmap.o    $(O)mklev.o    $(O)mkmaze.o
 VOBJ10 = $(O)mkobj.o    $(O)mkroom.o  $(O)mon.o      $(O)mondata.o  $(O)monmove.o
-VOBJ11 = $(O)monst.o    $(O)monstr.o  $(O)mplayer.o  $(O)mthrowu.o  $(O)muse.o
+VOBJ11 = $(O)monst.o    $(O)mplayer.o  $(O)mthrowu.o  $(O)muse.o
 VOBJ12 = $(O)music.o    $(O)o_init.o  $(O)objects.o  $(O)objnam.o   $(O)options.o
 VOBJ13 = $(O)pickup.o   $(O)pline.o   $(O)polyself.o $(O)potion.o   $(O)quest.o
 VOBJ14 = $(O)questpgr.o $(O)pager.o   $(O)pray.o     $(O)priest.o   $(O)read.o
@@ -535,9 +535,8 @@ util: $(O)utility.tag
 
 #LEVCOMPEXE = $(U)lev_comp
 
-$(O)utility.tag: $(INCL)/date.h $(INCL)/trap.h    $(INCL)/onames.h \
-	$(INCL)/pm.h	  monstr.c   vis_tab.c \
-	$(TILEUTIL)
+$(O)utility.tag: $(INCL)/date.h $(INCL)/trap.h $(INCL)/onames.h \
+	$(INCL)/pm.h vis_tab.c $(TILEUTIL)
 	echo utilities made > $@
 
 tileutil: $(U)gif2txt $(U)txt2ppm
