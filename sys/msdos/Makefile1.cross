@@ -286,7 +286,7 @@ default: $(prereq)
 util: $(HO)utility.tag
 
 $(HO)utility.tag: $(INCL)/date.h $(INCL)/trap.h $(INCL)/onames.h \
-	$(INCL)/pm.h monstr.c vis_tab.c $(TILEUTIL)
+	$(INCL)/pm.h vis_tab.c $(TILEUTIL)
 	echo host utilities made > $@
 
 tileutil: $(U)gif2txt $(U)txt2ppm
@@ -658,7 +658,6 @@ spotless: clean
 #	if [ -f $(INCL)/date.h ];      then rm $(INCL)/date.h; fi;
 #	if [ -f $(INCL)/dgn_comp.h ];  then rm $(INCL)/dgn_comp.h; fi;
 #	if [ -f $(INCL)/lev_comp.h ];  then rm $(INCL)/lev_comp.h; fi;
-#	if [ -f $(SRC)/monstr.c ];     then rm $(SRC)/monstr.c; fi;
 #	if [ -f $(SRC)/vis_tab.c ];    then rm $(SRC)/vis_tab.c; fi;
 #	if [ -f $(SRC)/tile.c ];       then rm $(SRC)/tile.c; fi;
 #	if [ -f $(DAT)/options ];      then rm $(DAT)/options; fi;
@@ -694,7 +693,6 @@ $(HO)hobj.tag:
 # src dependencies
 
 $(HO)tile.o: tile.c $(HACK_H)
-$(HO)monstr.o: monstr.c $(CONFIG_H)
 $(HO)vis_tab.o: vis_tab.c $(CONFIG_H) $(INCL)/vis_tab.h
 $(HO)alloc.o: alloc.c $(CONFIG_H)
 $(HO)dlb.o: dlb.c $(CONFIG_H) $(INCL)/dlb.h
