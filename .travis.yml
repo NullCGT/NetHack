@@ -9,9 +9,14 @@ matrix:
         - git clone --depth 1 https://github.com/wmcbrine/PDCurses.git ../pdcurses
         - cd util
         - wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.9/djgpp-linux64-gcc550.tar.bz2
+        - wget http://sandmann.dotster.com/cwsdpmi/csdpmi7b.zip
         - cd ../
         - tar xjf util/djgpp-linux64-gcc550.tar.bz2
-        - cd src
+        - cd djgpp
+        - mkdir cwsdpmi
+        - cd cwsdpmi
+        - unzip ../../util/csdpmi7b.zip
+        - cd ../../src
         - mkdir ../binary
         - cp ../dat/license ../binary
         - cp ../dat/data.base ../dat/data.bas
@@ -20,13 +25,18 @@ matrix:
         - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
         - cp ../sys/msdos/Makefile1.cross ../src/Makefile1
         - cp ../sys/msdos/Makefile2.cross ../src/Makefile2
-        - export djgpptop=$TRAVIS_BUILD_DIR/djgpp
+        - export DJGPP_TOP=$TRAVIS_BUILD_DIR/djgpp
         - make -f Makefile1
-#        - export PATH=$djgpptop/i586-pc-msdosdjgpp/bin/:$PATH
-#        - export GCC_EXEC_PREFIX=$djgpptop/lib/gcc/
-#        - export TARGET_CC=$(djgpptop)/i586-pc-msdosdjgpp/bin/gcc
-#        - export TARGET_LINK=$(djgpptop)/i586-pc-msdosdjgpp/bin/gcc
-#        - make -f Makefile2
+#        - export PATH=$DJGPP_TOP/i586-pc-msdosdjgpp/bin/:$PATH
+#        - export TARGET_CC=$DJGPP_TOP/i586-pc-msdosdjgpp/bin/gcc
+#        - export TARGET_LINK=$DJGPP_TOP/i586-pc-msdosdjgpp/bin/gcc
+        - export GCC_EXEC_PREFIX=$DJGPP_TOP/lib/gcc/
+        - make -f Makefile2
+        - if [ -f $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE]
+        - then
+        -     cp $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE ../binary
+        - fi
+        - ls -l ../binary
   exclude:
     - os: linux
       env: DESCR=linux-xenial-gcc HINTS=linux
