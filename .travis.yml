@@ -17,7 +17,7 @@ matrix:
         - mkdir ../binary
         - cp ../dat/license ../binary
         - cp ../dat/data.base ../dat/data.bas
-        - cp ../include/patchevel.h ../include/patchlev.h
+        - cp ../include/patcholevel.h ../include/patchlev.h
         - cp ../doc/Guidebook.txt ../doc/guidebk.txt
         - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
         - cp ../sys/msdos/Makefile.GCC ../src/Makefile
