@@ -1,4 +1,4 @@
-/* NetHack 3.6	extern.h	$NHDT-Date: 1573869062 2019/11/16 01:51:02 $  $NHDT-Branch: NetHack-3.6 $:$NHDT-Revision: 1.740 $ */
+/* NetHack 3.6	extern.h	$NHDT-Date: 1573940539 2019/11/16 21:42:19 $  $NHDT-Branch: NetHack-3.6 $:$NHDT-Revision: 1.741 $ */
 /* Copyright (c) Steve Creps, 1988.				  */
 /* NetHack may be freely redistributed.  See license for details. */
 
@@ -450,6 +450,7 @@ E char *FDECL(Amonnam, (struct monst *));
 E char *FDECL(a_monnam, (struct monst *));
 E char *FDECL(distant_monnam, (struct monst *, int, char *));
 E char *FDECL(mon_nam_too, (struct monst *, struct monst *));
+E char *FDECL(minimal_monnam, (struct monst *, BOOLEAN_P));
 E char *FDECL(rndmonnam, (char *));
 E const char *FDECL(hcolor, (const char *));
 E const char *NDECL(rndcolor);
@@ -1208,7 +1209,7 @@ E boolean FDECL(usmellmon, (struct permonst *));
 
 /* ### mapglyph.c ### */
 
-E int FDECL(mapglyph, (int, int *, int *, unsigned *, int, int));
+E int FDECL(mapglyph, (int, int *, int *, unsigned *, int, int, unsigned));
 E char *FDECL(encglyph, (int));
 E char *FDECL(decode_mixed, (char *, const char *));
 E void FDECL(genl_putmixed, (winid, int, const char *));
