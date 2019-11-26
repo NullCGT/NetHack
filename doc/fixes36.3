@@ -1,4 +1,4 @@
-$NHDT-Branch: NetHack-3.6 $:$NHDT-Revision: 1.187 $ $NHDT-Date: 1574387029 2019/11/22 01:43:49 $
+$NHDT-Branch: NetHack-3.6 $:$NHDT-Revision: 1.191 $ $NHDT-Date: 1574722861 2019/11/25 23:01:01 $
 
 This fixes36.3 file is here to capture information about updates in the 3.6.x
 lineage following the release of 3.6.2 in May 2019. Please note, however,
@@ -292,7 +292,21 @@ fix several tribute typos
 pluralization correction for unlikely epoch and loch
 ensure that --showpaths displays the personal configuration file last
 don't strip leading slash from hallucinatory monster name "/b/tard"
-unix: Fix double DLB definition in linux hints file
+quaffing unknown potion of see invisible resulted in asking what to call the
+	potion while updated monster display was buffered so not yet shown,
+	hence potentially noticeable effect was concealed from player
+when Riders use their bargethrough capability, don't let them swap places with
+	something located at a spot where corpses can't be created (their
+	door opening ability was letting them exchange places with something
+	co-located with a closed door without opening it; if killed there,
+	there'd be no corpse so no auto-revive)
+putting on levitation boots while on sink would crash when attempting to set
+	the enchantment known flag on Null 'uarmf' pointer
+look-at of mimics mimicking altars got an arbitary alignment from misuse of
+	underlying terrain
+polymorph_sink creating an altar passed a call to rn2() as an argument to a
+	macro which evaluates its parameter more than once
+unix: fix double DLB definition in linux hints file
 windows: fix --showpaths output for the data file which relies on being
 	constructed programmatically to incorporate the version suffix
 
