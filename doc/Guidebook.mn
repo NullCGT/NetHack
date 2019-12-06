@@ -21,7 +21,7 @@
 .ds h0 "NetHack Guidebook
 .ds h1
 .ds h2 %
-.ds vr "NetHack 3.6
+.ds vr "NetHack 3.7
 .ds f0 "\*(vr
 .ds f1
 .ds f2 "December 5, 2019
@@ -3824,9 +3824,6 @@ bulletproof input (MS-DOS sometimes treats \(oq\(haP\(cq as a printer toggle
 without it) (default off, OS/2, PC, and ST NetHack only).
 Note:  DEC Rainbows hang if this is turned on.
 Cannot be set with the \(oqO\(cq command.
-.lp soundcard
-(default on, PC NetHack only).
-Cannot be set with the \(oqO\(cq command.
 .lp subkeyvalue
 (Win32 tty NetHack only).
 May be used to alter the value of keystrokes that the operating system
@@ -4756,6 +4753,20 @@ The syntax is the same as WIZARDS.
 .lp
 MAXPLAYERS\ =\ Limit the maximum number of games that can be running
 at the same time.
+.lp
+SAVEFORMAT\ =\ A list of up to two save file formats separated by space. 
+The first format in the list will written as well as read. The second format 
+will be read only if no save file in the first format exists.
+Valid choices are \(lqhistorical\(rq for binary writing of entire structs, 
+\(lqlendian\(rq for binary writing of each field in little-endian order,
+\(lqascii\(rq for writing the save file content in ascii text.
+.lp
+BONESFORMAT\ =\ A list of up to two bones file formats separated by space. 
+The first format in the list will written as well as read. The second format 
+will be read only if no bones files in the first format exist.
+Valid choices are \(lqhistorical\(rq for binary writing of entire structs, 
+\(lqlendian\(rq for binary writing of each field in little-endian order,
+\(lqascii\(rq for writing the bones file content in ascii text.
 .lp
 SUPPORT\ =\ A string explaining how to get local support (no default value).
 .lp

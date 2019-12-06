@@ -48,14 +48,14 @@ static const int explcolors[] = {
 
 #if defined(USE_TILES) && defined(MSDOS)
 #define HAS_ROGUE_IBM_GRAPHICS \
-    (currentgraphics == ROGUESET && SYMHANDLING(H_IBM) && !iflags.grmode)
+    (g.currentgraphics == ROGUESET && SYMHANDLING(H_IBM) && !iflags.grmode)
 #else
 #define HAS_ROGUE_IBM_GRAPHICS \
-    (currentgraphics == ROGUESET && SYMHANDLING(H_IBM))
+    (g.currentgraphics == ROGUESET && SYMHANDLING(H_IBM))
 #endif
 
-#define is_objpile(x,y) (!Hallucination && level.objects[(x)][(y)] \
-                         && level.objects[(x)][(y)]->nexthere)
+#define is_objpile(x,y) (!Hallucination && g.level.objects[(x)][(y)] \
+                         && g.level.objects[(x)][(y)]->nexthere)
 
 /*ARGSUSED*/
 int
@@ -73,7 +73,7 @@ unsigned mgflags;
     boolean has_rogue_ibm_graphics = HAS_ROGUE_IBM_GRAPHICS,
             is_you = (x == u.ux && y == u.uy),
             has_rogue_color = (has_rogue_ibm_graphics
-                               && symset[currentgraphics].nocolor == 0);
+                               && g.symset[g.currentgraphics].nocolor == 0);
 
     /*
      *  Map the glyph back to a character and color.
@@ -131,14 +131,14 @@ unsigned mgflags;
         /* provide a visible difference if normal and lit corridor
            use the same symbol */
         } else if (iflags.use_color && offset == S_litcorr
-                   && showsyms[idx] == showsyms[S_corr + SYM_OFF_P]) {
+                   && g.showsyms[idx] == g.showsyms[S_corr + SYM_OFF_P]) {
             color = CLR_WHITE;
 #endif
         /* try to provide a visible difference between water and lava
            if they use the same symbol and color is disabled */
         } else if (!iflags.use_color && offset == S_lava
-                   && (showsyms[idx] == showsyms[S_pool + SYM_OFF_P]
-                       || showsyms[idx] == showsyms[S_water + SYM_OFF_P])) {
+                   && (g.showsyms[idx] == g.showsyms[S_pool + SYM_OFF_P]
+                       || g.showsyms[idx] == g.showsyms[S_water + SYM_OFF_P])) {
             special |= MG_BW_LAVA;
         } else {
             cmap_color(offset);
@@ -229,19 +229,19 @@ unsigned mgflags;
 
         if ((special & MG_PET) != 0) {
             ovidx = SYM_PET_OVERRIDE + SYM_OFF_X;
-            if (Is_rogue_level(&u.uz) ? ov_rogue_syms[ovidx]
-                                      : ov_primary_syms[ovidx])
+            if (Is_rogue_level(&u.uz) ? g.ov_rogue_syms[ovidx]
+                                      : g.ov_primary_syms[ovidx])
                 idx = ovidx;
         }
         if (is_you) {
             ovidx = SYM_HERO_OVERRIDE + SYM_OFF_X;
-            if (Is_rogue_level(&u.uz) ? ov_rogue_syms[ovidx]
-                                      : ov_primary_syms[ovidx])
+            if (Is_rogue_level(&u.uz) ? g.ov_rogue_syms[ovidx]
+                                      : g.ov_primary_syms[ovidx])
                 idx = ovidx;
         }
     }
 
-    ch = showsyms[idx];
+    ch = g.showsyms[idx];
 #ifdef TEXTCOLOR
     /* Turn off color if no color defined, or rogue level w/o PC graphics. */
     if (!has_color(color) || (Is_rogue_level(&u.uz) && !has_rogue_color))
@@ -259,7 +259,7 @@ int glyph;
 {
     static char encbuf[20]; /* 10+1 would suffice */
 
-    Sprintf(encbuf, "\\G%04X%04X", context.rndencode, glyph);
+    Sprintf(encbuf, "\\G%04X%04X", g.context.rndencode, glyph);
     return encbuf;
 }
 
@@ -289,7 +289,7 @@ const char *str;
                         rndchk = (rndchk * 16) + ((int) (dp - hex) / 2);
                     else
                         break;
-                if (rndchk == context.rndencode) {
+                if (rndchk == g.context.rndencode) {
                     gv = dcount = 0;
                     for (; *str && ++dcount <= 4; ++str)
                         if ((dp = index(hex, *str)) != 0)
@@ -297,7 +297,7 @@ const char *str;
                         else
                             break;
                     so = mapglyph(gv, &ch, &oc, &os, 0, 0, 0);
-                    *put++ = showsyms[so];
+                    *put++ = g.showsyms[so];
                     /* 'str' is ready for the next loop iteration and '*str'
                        should not be copied at the end of this iteration */
                     continue;
@@ -314,7 +314,7 @@ const char *str;
                         rndchk = (rndchk * 16) + ((int) (dp - hex) / 2);
                     else
                         break;
-                if (rndchk == context.rndencode) {
+                if (rndchk == g.context.rndencode) {
                     dcount = 0;
                     for (; *str && ++dcount <= 2; ++str)
                         if ((dp = index(hex, *str)) != 0)
@@ -322,7 +322,7 @@ const char *str;
                         else
                             break;
                 }
-                *put++ = showsyms[so];
+                *put++ = g.showsyms[so];
                 break;
 #endif
             case '\\':

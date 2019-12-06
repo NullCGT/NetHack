@@ -1011,9 +1011,9 @@ NetHackQtPlayerSelector::NetHackQtPlayerSelector(NetHackQtKeyBuffer& ks) :
 
     QButtonGroup* namebox = new QButtonGroup(1,Horizontal,"Name",this);
     QLineEdit* name = new QLineEdit(namebox);
-    name->setMaxLength(sizeof(plname)-1);
-    if ( strncmp(plname,"player",6) && strncmp(plname,"games",5) )
-	name->setText(plname);
+    name->setMaxLength(sizeof(g.plname)-1);
+    if ( strncmp(g.plname,"player",6) && strncmp(g.plname,"games",5) )
+	name->setText(g.plname);
     connect(name, SIGNAL(textChanged(const QString&)),
 	    this, SLOT(selectName(const QString&)) );
     name->setFocus();
@@ -1169,7 +1169,7 @@ NetHackQtPlayerSelector::NetHackQtPlayerSelector(NetHackQtKeyBuffer& ks) :
 
 void NetHackQtPlayerSelector::selectName(const QString& n)
 {
-    strncpy(plname,n.latin1(),sizeof(plname)-1);
+    strncpy(g.plname,n.latin1(),sizeof(g.plname)-1);
 }
 
 void NetHackQtPlayerSelector::selectRole()
@@ -2529,7 +2529,7 @@ void NetHackQtStatusWindow::updateStats()
 	encumber.setLabel(enc);
 	encumber.show();
     }
-    Strcpy(buf, plname);
+    Strcpy(buf, g.plname);
     if ('a' <= buf[0] && buf[0] <= 'z') buf[0] += 'A'-'a';
     Strcat(buf, " the ");
     if (u.mtimedone) {
@@ -2558,7 +2558,7 @@ void NetHackQtStatusWindow::updateStats()
 	dlevel.setLabel(buf,(long)depth(&u.uz));
     }
 
-    gold.setLabel("Au:", money_cnt(invent));
+    gold.setLabel("Au:", money_cnt(g.invent));
     if (u.mtimedone) {
 	// You're a monster!
 
@@ -2592,7 +2592,7 @@ void NetHackQtStatusWindow::updateStats()
 	align.setLabel("Lawful");
     }
 
-    if (::flags.time) time.setLabel("Time:",(long)moves);
+    if (::flags.time) time.setLabel("Time:",(long)g.moves);
     else time.setLabel("");
 #ifdef SCORE_ON_BOTL
     if (::flags.showscore) {
@@ -3302,7 +3302,7 @@ static char** rip_line=0;
     long year;
 
     /* Put name on stone */
-    Sprintf(rip_line[NAME_LINE], "%s", plname);
+    Sprintf(rip_line[NAME_LINE], "%s", g.plname);
 
     /* Put $ on stone */
     Sprintf(rip_line[GOLD_LINE], "%ld Au", done_money);
@@ -4029,7 +4029,7 @@ void NetHackQtMainWindow::keyPressEvent(QKeyEvent* event)
 
 void NetHackQtMainWindow::closeEvent(QCloseEvent* e)
 {
-    if ( program_state.something_worth_saving ) {
+    if ( g.program_state.something_worth_saving ) {
 	switch ( QMessageBox::information( this, "NetHack",
 	    "This will end your NetHack session",
 	    "&Save", "&Cancel", 0, 1 ) )
@@ -4621,7 +4621,7 @@ void NetHackQtBind::qt_askname()
 	NetHackQtSavedGameSelector sgsel((const char**)saved);
 	ch = sgsel.choose();
 	if ( ch >= 0 )
-	    strcpy(plname,saved[ch]);
+	    strcpy(g.plname,saved[ch]);
     }
     free_saved_games(saved);
 
@@ -4840,7 +4840,7 @@ void NetHackQtBind::qt_update_inventory()
     if (main)
 	main->updateInventory();
     /* doesn't work yet
-    if (program_state.something_worth_saving && iflags.perm_invent)
+    if (g.program_state.something_worth_saving && iflags.perm_invent)
         display_inventory(NULL, FALSE);
     */
 }
@@ -4894,14 +4894,14 @@ int NetHackQtBind::qt_nhgetch()
     //
     while (keybuffer.Empty()
 #ifdef SAFERHANGUP
-	   && !program_state.done_hup
+	   && !g.program_state.done_hup
 #endif
 	   ) {
 	qApp->enter_loop();
     }
 
 #ifdef SAFERHANGUP
-    if (program_state.done_hup && keybuffer.Empty()) return '\033';
+    if (g.program_state.done_hup && keybuffer.Empty()) return '\033';
 #endif
     return keybuffer.GetAscii();
 }
@@ -4915,13 +4915,13 @@ int NetHackQtBind::qt_nh_poskey(int *x, int *y, int *mod)
     //
     while (keybuffer.Empty() && clickbuffer.Empty()
 #ifdef SAFERHANGUP
-	   && !program_state.done_hup
+	   && !g.program_state.done_hup
 #endif
 	   ) {
 	qApp->enter_loop();
     }
 #ifdef SAFERHANGUP
-    if (program_state.done_hup && keybuffer.Empty()) return '\033';
+    if (g.program_state.done_hup && keybuffer.Empty()) return '\033';
 #endif
     if (!keybuffer.Empty()) {
 	return keybuffer.GetAscii();
@@ -5170,7 +5170,7 @@ bool NetHackQtBind::notify(QObject *receiver, QEvent *event)
 
     bool result=QApplication::notify(receiver,event);
 #ifdef SAFERHANGUP
-    if (program_state.done_hup) {
+    if (g.program_state.done_hup) {
 	keybuffer.Put('\033');
 	qApp->exit_loop();
 	return TRUE;

@@ -36,11 +36,11 @@ matrix:
     - os: linux
       env: DESCR=linux-xenial-gcc HINTS=linux
       compiler: gcc
-      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make install"
+      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make fetch-lua && make install"
     - os: linux
       env: DESCR=linux-xenial-clang HINTS=linux
       compiler: clang
-      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make install"
+      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make fetch-lua && make install"
     - os: linux
       env: DESCR=linux-xenial-gcc-x11 HINTS=linux-x11
       compiler: gcc
@@ -50,7 +50,7 @@ matrix:
             - libx11-dev
             - libxaw7-dev
             - xfonts-utils
-      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make install"
+      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make fetch-lua && make install"
     - os: linux
       env: DESCR=linux-xenial-gcc-qt5 HINTS=linux-qt5
       compiler: gcc
@@ -63,7 +63,7 @@ matrix:
             - qtbase5-dev
             - qtmultimedia5-dev
             - qtbase5-dev-tools
-      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && QT_SELECT=5 make MOC=moc install"
+      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make fetch-lua && make QT_SELECT=5 MOC=moc install"
     - os: linux
       env: DESCR=linux-bionic-gcc-x11 HINTS=linux-x11
       dist: bionic
@@ -74,7 +74,7 @@ matrix:
             - libx11-dev
             - libxaw7-dev
             - xfonts-utils
-      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make install"
+      script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make fetch-lua && make install"
     - os: linux
       env: DESCR=linux-xenial-gcc-minimal HINTS=linux-minimal
       compiler: gcc
@@ -99,8 +99,18 @@ matrix:
               sed -i '/^#define SHELL/d'          include/unixconf.h
               sed -i '/^#define SUSPEND/d'        include/unixconf.h
               sed -i 's/^#define TEXTCOLOR//'     include/unixconf.h
-              make install
+              make fetch-lua && make install
               cat dat/options
+    - os: linux
+      env: DESCR=msdos-cross-on-linux HINTS=linux LUA_VERSION=5.3.5
+      compiler: gcc
+      script:
+#        - export
+        - cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../
+        - make fetch-lua
+        - cd lib/lua-$LUA_VERSION/src && make a && cd ../../.. 
+        - sh sys/msdos/msdos-cross-compile.sh
+  exclude:
     - os: windows
       env: DESCR=windows-visualstudio
       language: shell

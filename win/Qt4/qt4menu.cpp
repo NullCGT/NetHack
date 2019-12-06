@@ -667,10 +667,10 @@ static char** rip_line=0;
     int line;
 
     /* Put name on stone */
-    snprintf(rip_line[NAME_LINE], STONE_LINE_LEN+1, "%s", plname);
+    snprintf(rip_line[NAME_LINE], STONE_LINE_LEN+1, "%s", g.plname);
 
     /* Put $ on stone */
-    snprintf(rip_line[GOLD_LINE], STONE_LINE_LEN+1, "%ld Au", money_cnt(invent));
+    snprintf(rip_line[GOLD_LINE], STONE_LINE_LEN+1, "%ld Au", money_cnt(g.invent));
 
     /* Put together death description */
     formatkiller(buf, sizeof buf, how, FALSE);

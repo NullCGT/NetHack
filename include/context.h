@@ -112,7 +112,7 @@ struct context_info {
                             /* 3: FH, 4: ff+, 5: ff-, 6: FF+, 7: FF- */
                             /* 8: travel */
     unsigned startingpet_mid;
-    int current_fruit; /* fruit->fid corresponding to pl_fruit[] */
+    int current_fruit; /* fruit->fid corresponding to g.pl_fruit[] */
     int warnlevel;
     int rndencode;          /* randomized escape sequence introducer */
     long next_attrib_check; /* next attribute check */
@@ -141,7 +141,5 @@ struct context_info {
     struct tribute_info tribute;
     struct novel_tracking novel;
 };
-
-extern NEARDATA struct context_info context;
 
 #endif /* CONTEXT_H */
