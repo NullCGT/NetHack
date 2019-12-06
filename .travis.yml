@@ -2,38 +2,6 @@ language: c
 matrix:
   include:
     - os: linux
-      env: DESCR=msdos-cross-on-linux
-      compiler: gcc
-      script:
-#        - export
-        - git clone --depth 1 https://github.com/wmcbrine/PDCurses.git ../pdcurses
-        - cd util
-        - wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.9/djgpp-linux64-gcc550.tar.bz2
-        - wget http://sandmann.dotster.com/cwsdpmi/csdpmi7b.zip
-        - cd ../
-        - tar xjf util/djgpp-linux64-gcc550.tar.bz2
-        - cd djgpp
-        - mkdir cwsdpmi
-        - cd cwsdpmi
-        - unzip ../../util/csdpmi7b.zip
-        - cd ../../src
-        - mkdir ../binary
-        - cp ../dat/license ../binary
-        - cp ../dat/data.base ../dat/data.bas
-        - cp ../include/patchlevel.h ../include/patchlev.h
-        - cp ../doc/Guidebook.txt ../doc/guidebk.txt
-        - cp ../sys/share/posixregex.c ../sys/share/posixreg.c
-        - cp ../sys/msdos/Makefile1.cross ../src/Makefile1
-        - cp ../sys/msdos/Makefile2.cross ../src/Makefile2
-        - export DJGPP_TOP=$TRAVIS_BUILD_DIR/djgpp
-        - make -f Makefile1
-        - cat ../include/date.h
-        - export GCC_EXEC_PREFIX=$DJGPP_TOP/lib/gcc/
-        - make -f Makefile2
-        - if [ -f $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE ]; then cp $TRAVIS_BUILD_DIR/djgpp/cwsdpmi/bin/CWSDPMI.EXE ../binary; fi;
-        - ls -l ../binary
-  exclude:
-    - os: linux
       env: DESCR=linux-xenial-gcc HINTS=linux
       compiler: gcc
       script: "cd sys/unix/ && sh setup.sh hints/$HINTS && cd ../../ && make fetch-lua && make install"
@@ -110,12 +78,12 @@ matrix:
         - make fetch-lua
         - cd lib/lua-$LUA_VERSION/src && make a && cd ../../.. 
         - sh sys/msdos/msdos-cross-compile.sh
-  exclude:
     - os: windows
       env: DESCR=windows-visualstudio
       language: shell
       script:
         - ./win/win32/vs2017/travisci.sh
+  exclude:
     - os: windows
 #     install: choco install mingw
       env: DESCR=windows-mingw
@@ -142,16 +110,16 @@ notifications:
   email: false
 
 #
-deploy:
-  provider: releases
-  api_key:
-    secure: "U0Dt2CXrcG8Yi4taUCT/6AnM+0IJtdCv6IVG/2rGooUY3pZjNWE9XDM6X9ZeAmbI79aN6FPTppjUf3KbB/upYeJt+8mrjnxEk/ZTO1xXDDW8iL/DiqnczoFsMGmPsTM+Fkeak8bu0SifI7Qkx9i1N+zOyl2VdlaxGjchPfl/OJw2jcQs7rOGRfr23/rapZKTcFq+BFlxMiIHa0dXbCJ9vagdlyAeclOCtPjw1VoH/Cb/+0/Xlx2MFPncw4/1P+bO/fPantHyehh3/WCDVCnI4M7ftONpsTVRrQ+Hml89teUH9/1xXUOpbCeVghWr1rumLcQzMqLKNj2lP/gm9co2/DKpxiUPUzBfO/9Jvl1CNoEwPYQBRNb38kggDvAT4vKX38Oi5sZvumFEO4L0y7o4cW6SA4/CYIykfxOdkrryt8ltfWwopdy3I/DothYw31vJ9GsZOCAShFRAy3hJxYUbHhT+7SDUBadVSEkb4UqxQ+7zntAVT+Lp4DXLAfvsWxZGrQoP/IrWAgNOLRKILubpzh+YpadMH3Ygha2JRAeJAEZ3DnXf3vOOAucWnk4mNXDbW35GTDTAJDWMvddZCfsrUI/uHxgaRjFs9fLX1X5tqhGnsr27sKLWyX+zrIPVV0TPl3AzYPAf6Bc8Okeu+JEGQERvvgSasCuYcmhgYznBVJI="
-  file_glob: true
-  file: 
-    - "$TRAVIS_TAG.x86.zip"
-  skip_cleanup: true
-  on:
-    tags: true
-  prerelease: true
-  name: "Pre-release build of NetHack 3.6.3"
-  body: "This is an auto generated pre-release build of NetHack 3.6.3."
+#deploy:
+#  provider: releases
+#  api_key:
+#    secure: "U0Dt2CXrcG8Yi4taUCT/6AnM+0IJtdCv6IVG/2rGooUY3pZjNWE9XDM6X9ZeAmbI79aN6FPTppjUf3KbB/upYeJt+8mrjnxEk/ZTO1xXDDW8iL/DiqnczoFsMGmPsTM+Fkeak8bu0SifI7Qkx9i1N+zOyl2VdlaxGjchPfl/OJw2jcQs7rOGRfr23/rapZKTcFq+BFlxMiIHa0dXbCJ9vagdlyAeclOCtPjw1VoH/Cb/+0/Xlx2MFPncw4/1P+bO/fPantHyehh3/WCDVCnI4M7ftONpsTVRrQ+Hml89teUH9/1xXUOpbCeVghWr1rumLcQzMqLKNj2lP/gm9co2/DKpxiUPUzBfO/9Jvl1CNoEwPYQBRNb38kggDvAT4vKX38Oi5sZvumFEO4L0y7o4cW6SA4/CYIykfxOdkrryt8ltfWwopdy3I/DothYw31vJ9GsZOCAShFRAy3hJxYUbHhT+7SDUBadVSEkb4UqxQ+7zntAVT+Lp4DXLAfvsWxZGrQoP/IrWAgNOLRKILubpzh+YpadMH3Ygha2JRAeJAEZ3DnXf3vOOAucWnk4mNXDbW35GTDTAJDWMvddZCfsrUI/uHxgaRjFs9fLX1X5tqhGnsr27sKLWyX+zrIPVV0TPl3AzYPAf6Bc8Okeu+JEGQERvvgSasCuYcmhgYznBVJI="
+#  file_glob: true
+#  file: 
+#    - "$TRAVIS_TAG.x86.zip"
+#  skip_cleanup: true
+#  on:
+#    tags: true
+#  prerelease: true
+#  name: "Pre-release build of NetHack 3.6.3"
+#  body: "This is an auto generated pre-release build of NetHack 3.6.3."
