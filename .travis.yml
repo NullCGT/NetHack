@@ -1,12 +1,6 @@
 language: c
 matrix:
   include:
-    - os: windows
-      env: DESCR=windows-visualstudio
-      language: shell
-      script:
-        - ./win/win32/vs2017/travisci.sh
-  exclude:
     - os: linux
       env: DESCR=linux-xenial-gcc HINTS=linux
       compiler: gcc
@@ -84,6 +78,12 @@ matrix:
         - make fetch-lua
         - cd lib/lua-$LUA_VERSION/src && make a && cd ../../.. 
         - sh sys/msdos/msdos-cross-compile.sh
+    - os: windows
+      env: DESCR=windows-visualstudio
+      language: shell
+      script:
+        - ./win/win32/vs2017/travisci.sh
+  exclude:
     - os: windows
 #     install: choco install mingw
       env: DESCR=windows-mingw
