@@ -25,11 +25,15 @@ export LIB=/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/$VSVER/$TOOLSVER
 export LIB=/c/Program\ Files\ \(x86\)/Windows\ Kits/10/lib/$WKITVER/ucrt/x86:$LIB
 export LIB=/c/Program\ Files\ \(x86\)/Windows\ Kits/10/lib/$WKITVER/um/x86:$LIB
 mkdir -p lib
-git clone --depth 1 https://github.com/wmcbrine/PDCurses.git lib/pdcurses
+cd lib
+git clone --depth 1 https://github.com/wmcbrine/PDCurses.git pdcurses
+git clone --depth 1 https://github.com/universal-ctags/ctags.git ctags
 cd lib
 curl -R -O http://www.lua.org/ftp/lua-5.3.5.tar.gz
 tar zxf lua-5.3.5.tar.gz
-cd ../
+cd ctags
+nmake -f mk_mvc.mak
+cd ../../
 export ADD_CURSES=Y
 export PDCURSES_TOP=../lib/pdcurses
 export
