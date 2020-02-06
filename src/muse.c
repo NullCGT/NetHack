@@ -1063,6 +1063,7 @@ struct monst *mtmp;
 /*#define MUSE_WAN_TELEPORTATION 15*/
 #define MUSE_POT_SLEEPING 16
 #define MUSE_SCR_EARTH 17
+#define MUSE_CAMERA 18
 
 /* Select an offensive item/action for a monster.  Returns TRUE iff one is
  * found.
@@ -1201,6 +1202,14 @@ struct monst *mtmp;
             && (!In_endgame(&u.uz) || Is_earthlevel(&u.uz))) {
             g.m.offensive = obj;
             g.m.has_offense = MUSE_SCR_EARTH;
+        }
+        nomore(MUSE_CAMERA);
+        if (obj->otyp == EXPENSIVE_CAMERA 
+            && (!Blind || (hates_light(g.youmonst.data) && !rn2(3)))
+            && dist2(mtmp->mx, mtmp->my, mtmp->mux, mtmp->muy) <= 2
+            && obj->spe > 0) {
+            g.m.offensive = obj;
+            g.m.has_offense = MUSE_CAMERA;
         }
 #if 0
         nomore(MUSE_SCR_FIRE);
@@ -1480,6 +1489,22 @@ struct monst *mtmp;
         }
 
         return (DEADMONSTER(mtmp)) ? 1 : 2;
+    }
+    case MUSE_CAMERA: {
+        if (oseen)
+            if (Hallucination)
+                verbalize("Say cheese!");
+            else
+                pline("%s takes a picture of you with %s!", Monnam(mtmp), an(xname(otmp)));
+        else if (!Deaf)
+            You_hear("the click of a camera shutter.");
+        if (!Blind) {
+            You("are blinded by the flash of light!");
+            make_blinded(Blinded + (long) rnd(1 + 50), FALSE);
+        }
+        lightdamage(otmp, TRUE, 5);
+        otmp->spe--;
+        return 1;
     }
 #if 0
     case MUSE_SCR_FIRE: {
@@ -2087,6 +2112,8 @@ struct obj *obj;
             return (boolean) (!obj->cursed && !is_unicorn(mon->data));
         if (typ == FROST_HORN || typ == FIRE_HORN)
             return (obj->spe > 0 && can_blow(mon));
+        if (typ == EXPENSIVE_CAMERA)
+            return TRUE;
         break;
     case FOOD_CLASS:
         if (typ == CORPSE)
